@@ -9,7 +9,7 @@ gem "jbuilder"
 gem "importmap-rails"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
-gem "rails", "~> 7.0.4"
+gem "rails", "~> 7.0.3", ">= 7.0.3.1"
 gem "redis", "~> 4.0"
 gem "sassc-rails" # Use Sass to process CSS
 gem "sprockets-rails"
@@ -45,4 +45,8 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+end
+
+group :test do
+  gem "shoulda-matchers", "~> 5.0"
 end
