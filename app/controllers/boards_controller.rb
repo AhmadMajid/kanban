@@ -48,8 +48,4 @@ class BoardsController < ApplicationController
   def board
     @board ||= Board.find(params[:id])
   end
-
-  def list_params
-    params.require(:lists).permit(:name)
-  end
 end
