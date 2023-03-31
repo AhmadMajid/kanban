@@ -1,9 +1,12 @@
-
 class ListsController < ApplicationController
   before_action :authenticate_user!
 
   def new
     @list = board.lists.new
+  end
+
+  def edit
+    @list = board.lists.find(params[:id])
   end
 
   def create
