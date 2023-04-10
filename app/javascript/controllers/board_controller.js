@@ -100,6 +100,42 @@ export default class extends Controller {
     });
   }
 
+  buildItemData(items) {
+    return map(items, (item) => {
+      return {
+        id: item.dataset.eid,
+        position: item.dataset.position,
+        list_id: item.dataset.listId
+      }
+    });
+  }
+
+  itemPositioningApiCall(itemsData) {
+    axios.put(this.element.dataset.itemPositionsApiUrl, {
+      items: itemsData
+    }, {
+      headers: this.HEADERS
+    }).then(() => {
+    });
+  }
+
+  updateItemPositioning(target, source) {
+    const targetItems = Array.from(target.getElementsByClassName('kanban-item'));
+    const sourceItems = Array.from(source.getElementsByClassName('kanban-item'));
+
+    targetItems.forEach((item, index) => {
+      item.dataset.position = index;
+      item.dataset.listId = target.closest('.kanban-board').dataset.id;
+    });
+    sourceItems.forEach((item, index) => {
+      item.dataset.position = index;
+      item.dataset.listId = source.closest('.kanban-board').dataset.id;
+    });
+
+    this.itemPositioningApiCall(this.buildItemData(targetItems));
+    this.itemPositioningApiCall(this.buildItemData(sourceItems));
+  }
+
   buildKanban(boards) {
     new jKanban({
       element: `#${this.element.id}`,
@@ -114,27 +150,7 @@ export default class extends Controller {
         this.updateListPosition(el);
       },
       dropEl: (el, target, source, sibling) => {
-        console.log('dropEl');
-        console.log('dropEl.el: ', el);
-        console.log('dropEl.target: ', target);
-        console.log('dropEl.source: ', source);
-        console.log('dropEl.sibling: ', sibling);
-
-        const targetItems = Array.from(target.getElementsByClassName('kanban-item'));
-        const sourceItems = Array.from(source.getElementsByClassName('kanban-item'));
-
-        console.log('targetItems: ', targetItems);
-        console.log('sourceItems: ', sourceItems);
-
-        console.log('target.closest(.kanban-board): ', target.closest('.kanban-board').dataset.id);
-        targetItems.forEach((item, index) => {
-          item.dataset.position = index;
-          item.dataset.listId = target.closest('.kanban-board').dataset.id;
-        });
-        sourceItems.forEach((item, index) => {
-          item.dataset.position = index;
-          item.dataset.listId = source.closest('.kanban-board').dataset.id;
-        });
+        this.updateItemPositioning(target, source);
       },
     });
   }
