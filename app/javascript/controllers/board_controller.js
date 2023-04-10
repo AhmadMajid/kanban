@@ -43,7 +43,6 @@ export default class extends Controller {
       axios.delete(`${this.element.dataset.boardListsUrl}/${boardId}`, {
         headers: this.HEADERS
       }).then((_) => {
-        // window.location.reload();
         Turbo.visit(window.location.href);
       });
     });
@@ -139,10 +138,12 @@ export default class extends Controller {
   showItemModal() {
     document.getElementById('show-modal-div').click();
   }
+
   populateItemInformation(itemId) {
     axios.get(`/api/items/${itemId}`, {}, { headers: this.HEADERS }).then((response) => {
       document.getElementById('item-title').textContent = get(response, 'data.data.attributes.title');
       document.getElementById('item-description').textContent = get(response, 'data.data.attributes.description');
+      document.getElementById('item-edit-link').href = `/lists/${get(response, 'data.data.attributes.list_id')}/items/${itemId}/edit`
     });
   }
 
