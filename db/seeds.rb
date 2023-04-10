@@ -1,4 +1,3 @@
-
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
@@ -8,6 +7,10 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 user = User.create(email: "john@test.co", password: "password")
+
+10.times do
+  User.create(email: Faker::Internet.email, password: "password")
+end
 
 5.times do |i|
   Board.create(user: user, name: "Board #{i + 1}")
@@ -19,3 +22,4 @@ Board.find_each do |board|
   board.reload.lists.each do |list|
     5.times { |i| Item.create(list: list, title: "Item #{i + 1}", description: "Description for Item: #{i + 1}") }
   end
+end
