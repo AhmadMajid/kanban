@@ -92,6 +92,6 @@ RSpec.describe "Boards", type: :request do
         delete board_path(board)
       end.to change { Board.count }.by(-1)
       expect(response).to have_http_status(:redirect)
-      end
     end
   end
+end
